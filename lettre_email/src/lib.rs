@@ -348,6 +348,44 @@ impl EmailBuilder {
             .child(alternate.build())
     }
 
+    /// XXX
+    pub fn encrypted<S: Into<String>>(
+        self,
+        body_octect_stream: S,
+    ) -> EmailBuilder {
+        let pgp_encrypted = PartBuilder::new()
+            .body("Version: 1")
+            .header((
+                "Content-Type",
+                "application/pgp-encrypted",
+            ))
+            .header((
+                "Content-Description",
+                "PGP/MIME version identification",
+            ))
+            .build();
+        let octect_stream = PartBuilder::new()
+            .body(body_octect_stream)
+            .header((
+                "Content-Type",
+                mime::APPLICATION_OCTET_STREAM.to_string(),
+            ))
+            .header((
+                "Content-Description",
+                "OpenPGP encrypted message",
+            ))
+            .header((
+                "Content-Disposition",
+                "filename=\"encrypted.asc\"",
+            ))
+            .build();
+            
+        self.message_type(MimeMultipartType::Encrypted)
+            .child(pgp_encrypted)
+            .child(octect_stream)
+    }
+
+
     /// Sets the envelope for manual destination control
     /// If this function is not called, the envelope will be calculated
     /// from the "to" and "cc" addresses you set.

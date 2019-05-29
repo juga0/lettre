@@ -24,9 +24,20 @@ lettre = { version = "^0.9", path = "../lettre", features = ["smtp-transport"] }
 glob = "0.3"
 
 [dependencies]
-email = "^0.0.20"
-mime = "^0.3"
+# email = "0.0.20"
+# email = {git = "https://github.com/niax/rust-email"}
+email = {git = "https://github.com/juga0/rust-email", branch = 'encrypted'}
+# mime = "^0.3"
+mime = {git = "https://github.com/juga0/mime", branch = 'encrypted'}
 time = "^0.1"
 uuid = { version = "^0.7", features = ["v4"] }
 lettre = { version = "^0.9", path = "../lettre", default-features = false }
 base64 = "^0.10"
+
+# [patch.crates-io]
+# # email = { path = '../lettre/lettre_email', branch = 'encrypted' }
+# email = { path = '../../rust-email', branch = 'encrypted' }
+
+# [patch.'https://github.com/niax/rust-email']
+# email = { path = '../../rust-email', branch = 'encrypted' }
+
